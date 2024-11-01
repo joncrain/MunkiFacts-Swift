@@ -1,0 +1,40 @@
+name: Build Package
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build_package:
+    name: Build Package
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Swift
+        uses: actions/setup-swift@v2
+        with:
+          swift-version: '5.5'
+      - name: Swift Build
+        run: |
+          arch -x86_64 swift build -c release
+          mv .build/x86_64-apple-macosx/release/munkifacts .build/release/munkifacts_x86_64
+          arch -arm64 swift build -c release
+          mv .build/arm64-apple-macosx/release/munkifacts .build/release/munkifacts_arm64
+          lipo -create -output .build/release/munkifacts .build/release/munkifacts_x86_64 .build/release/munkifacts_arm64
+      - name: Create Package Directories
+        run: |
+          curl https://raw.githubusercontent.com/munki/munki-pkg/8d68abbab4c459857d28fdd84ad668ec6ccdf98a/munkipkg -o ${{ github.action_path }}/munkipkg
+          ${{ github.action_path }}/munkipkg --create MunkiFacts
+          mkdir -p MunkiFacts/payload/usr/local/munki/conditions
+          cp .build/release/munkifacts MunkiFacts/payload/usr/local/munki/conditions/munkifacts
+          sed -i '' "s/<string>1.0<\/string>/<string>${{ github.ref }}<\/string>/" MunkiFacts/build-info.plist
+          munkipkg ./MunkiFacts
+      - name: Create Release
+        uses: softprops/action-gh-release@d1798aa3dc45a3eb4258be26641b43ef01552715 # v2.0.8
+        with:
+          files: MunkiFacts/build/*.pkg
+          tag_name: ${{ github.ref }}
