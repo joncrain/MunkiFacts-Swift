@@ -4,7 +4,7 @@ import CoreFoundation
 class PluginManager {
     private let pluginPath: String
     
-    init(pluginPath: String = "/Library/Managed Installs/MunkiFacts/Plugins/") {
+    init(pluginPath: String = "/usr/local/munki/conditions/plugins") {
         self.pluginPath = pluginPath
     }
     

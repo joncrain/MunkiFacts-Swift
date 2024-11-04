@@ -17,5 +17,8 @@ let package = Package(
         .target(
             name: "FactPlugin",
             dependencies: []),
+        .testTarget(
+            name: "FactPluginTests",
+            dependencies: ["FactPlugin"])
     ]
 )
