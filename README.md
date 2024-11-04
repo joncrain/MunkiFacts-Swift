@@ -7,14 +7,14 @@ Swift
 Xcode (for macOS development)
 
 ### Building the Project
-To build the project, navigate to the MunkiFacts directory and run:
+To build the project, clone the repo and run:
 
 ```bash
 swift build -c release
 ```
 
 ### Running the Project
-After building, to run the project, use:
+After building, to run the project, use (you must install at least one plugin):
 
 ```bash
 .build/release/munkifacts
