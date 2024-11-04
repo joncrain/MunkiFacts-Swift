@@ -1,5 +1,5 @@
 # MunkiFacts-Swift
-MunkiFacts is a Swift-based project designed to manage and update conditional items based on various facts. Admins can create multiple plugins to extend its functionality.
+MunkiFacts-Swift is a Swift-based project designed to manage and update conditional items based on various facts. Admins can create multiple plugins to extend its functionality.
 
 ## Getting Started
 
